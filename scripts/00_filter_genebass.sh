@@ -7,7 +7,7 @@
 #SBATCH --error=logs/filter_genebass.errors.log
 #SBATCH --partition=short
 #SBATCH --cpus-per-task 1
-#SBATCH --array=21
+#SBATCH --array=1,21
 
 set -eu
 
@@ -30,14 +30,24 @@ mkdir -p ${out_dir}
 
 readonly genebass_dir="/gpfs3/well/lindgren-ukbb/projects/ukbb-11867/nbaya/resources/genebass/"
 readonly genebass_variants="${genebass_dir}/variant_results.rows.chr${chr}.tsv.gz"
-readonly variants="${out_prefix}.varid.txt"
-zcat ${genebass_variants} | awk ' {print $1":"$2":"$3":"$4}' > "${variants}" 
+readonly variants_all="${out_prefix}.varid.txt"
+readonly variants_protein_coding="${out_prefix}.protein_coding.varid.txt"
+
+zcat ${genebass_variants} | awk ' {print $1":"$2":"$3":"$4}' > "${variants_all}" 
+zcat ${genebass_variants} | grep -E "(pLoF)|(missense)" | awk ' {print $1":"$2":"$3":"$4}' > "${variants_protein_coding}" 
 
 module load BCFtools/1.17-GCC-12.2.0
-bcftools view -i "ID=@${variants}" ${in} -Oz -o ${out_prefix}.vcf.gz
+bcftools index -f ${in}
+
+bcftools view -i "ID=@${variants_all}" ${in} -Oz -o ${out_prefix}.vcf.gz
 bcftools index ${out_prefix}.vcf.gz
 
+bcftools view -i "ID=@${variants_protein_coding}" ${in} -Oz -o ${out_prefix}.protein_coding.vcf.gz
+bcftools index ${out_prefix}.protein_coding.vcf.gz
 
+gzip -f ${variants_all}
+gzip -f ${variants_protein_coding}
+rm -f ${variants_all} ${variants_protein_coding}
 
 
 
