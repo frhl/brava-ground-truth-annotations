@@ -39,10 +39,12 @@ zcat ${genebass_variants} | grep -E "(pLoF)|(missense)" | awk ' {print $1":"$2":
 module load BCFtools/1.17-GCC-12.2.0
 bcftools index -f ${in}
 
-bcftools view -i "ID=@${variants_all}" ${in} -Oz -o ${out_prefix}.vcf.gz
+bcftools view -i "ID=@${variants_all}" ${in} -O -o ${out_prefix}.vcf 
+bgzip ${out_prefix}.vcf
 bcftools index ${out_prefix}.vcf.gz
 
-bcftools view -i "ID=@${variants_protein_coding}" ${in} -Oz -o ${out_prefix}.protein_coding.vcf.gz
+bcftools view -i "ID=@${variants_protein_coding}" ${in} -O -o ${out_prefix}.protein_coding.vcf
+bgzip ${out_prefix}.protein_coding.vcf
 bcftools index ${out_prefix}.protein_coding.vcf.gz
 
 gzip -f ${variants_all}

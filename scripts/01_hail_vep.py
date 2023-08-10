@@ -24,7 +24,7 @@ def main(args):
         ht = ht.key_by(locus=hl.locus(ht.contig, hl.int32(ht.position), reference_genome='GRCh38'), alleles=[ht.allele1, ht.allele2])
     elif "vcf" in input_path:
         contig_recoding = {str(i): f"chr{i}" for i in list(range(1, 23)) + ['X']}
-        mt = hl.import_vcf(input_path, reference_genome='GRCh38', contig_recoding=contig_recoding, force_bgz=True)
+        mt = hl.import_vcf(input_path, reference_genome='GRCh38', contig_recoding=contig_recoding)
         ht = mt.rows().select()
     else:
         ht = hl.read_table(input_path)
