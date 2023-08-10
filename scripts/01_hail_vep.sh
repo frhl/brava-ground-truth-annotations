@@ -21,11 +21,10 @@ readonly array_idx=$( get_array_task_id )
 readonly chr=$( get_chr ${array_idx} )
 
 readonly in_dir="data/vep-in"
-readonly in="${in_dir}/ukb_wes_450k.qced.chr${chr}.bim"
-readonly input_type="bim"
+readonly in="${in_dir}/genebass.chr${chr}.vcf.gz"
 
-readonly out_dir="data/vep/hail"
-readonly out_prefix="${out_dir}/ukb_wes_450k.qced.chr${chr}"
+readonly out_dir="data/vep-hail-out"
+readonly out_prefix="${out_dir}/genebass.hailvep.gnomad_process_csqs.chr${chr}"
 readonly hail_script="scripts/01_hail_vep.py"
 
 mkdir -p ${out_dir}

@@ -22,7 +22,7 @@ readonly in_dir="data-ukb"
 readonly in="${in_dir}/ukb_wes_450k.qced.chr${chr}.vcf.gz"
 
 readonly out_dir="data/vep-in"
-readonly out_prefix="${out_dir}/genebase.chr${chr}"
+readonly out_prefix="${out_dir}/genebass.chr${chr}"
 
 echo "ok"
 
