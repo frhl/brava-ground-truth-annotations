@@ -1,10 +1,10 @@
 #!/usr/bin/env bash
 #
 #SBATCH --account=lindgren.prj
-#SBATCH --job-name=hail_vep
+#SBATCH --job-name=process_csq
 #SBATCH --chdir=/well/lindgren-ukbb/projects/ukbb-11867/flassen/projects/KO/brava-ground-truth-annotations
-#SBATCH --output=logs/hail_vep.log
-#SBATCH --error=logs/hail_vep.errors.log
+#SBATCH --output=logs/process_csq.log
+#SBATCH --error=logs/process_csq.errors.log
 #SBATCH --partition=short
 #SBATCH --cpus-per-task 2
 #SBATCH --array=1,21
@@ -20,12 +20,12 @@ readonly spark_dir="data/tmp/spark"
 readonly array_idx=$( get_array_task_id )
 readonly chr=$( get_chr ${array_idx} )
 
-readonly in_dir="data/vep-in"
-readonly in="${in_dir}/genebass.chr${chr}.vcf.gz"
+readonly in_dir="data/vep-hail-out"
+readonly in="${in_dir}/genebass.hailvep.chr${chr}"
 
 readonly out_dir="data/vep-hail-out"
-readonly out_prefix="${out_dir}/genebass.hailvep.chr${chr}"
-readonly hail_script="scripts/01_hail_vep.py"
+readonly out_prefix="${out_dir}/genebass.hailvep.gnomad_process_csqs.chr${chr}"
+readonly hail_script="scripts/02_process_csq.py"
 
 mkdir -p ${out_dir}
 mkdir -p ${spark_dir}

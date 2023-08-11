@@ -1,10 +1,10 @@
 #!/usr/bin/env bash
 #
 #SBATCH --account=lindgren.prj
-#SBATCH --job-name=hail_ground_truth
+#SBATCH --job-name=worst_csq_by_gene_canonical
 #SBATCH --chdir=/well/lindgren-ukbb/projects/ukbb-11867/flassen/projects/KO/brava-ground-truth-annotations
-#SBATCH --output=logs/hail_ground_truth.log
-#SBATCH --error=logs/hail_ground_truth.errors.log
+#SBATCH --output=logs/worst_csq_by_gene_canonical.log
+#SBATCH --error=logs/worst_csq_by_gene_canonical.errors.log
 #SBATCH --partition=short
 #SBATCH --cpus-per-task 1
 #SBATCH --array=21
@@ -21,8 +21,8 @@ readonly in_dir="data/vep-hail-out"
 readonly in="${in_dir}/genebass.hailvep.gnomad_process_csqs.chr${chr}.ht"
 
 readonly out_dir="data/vep-hail-out"
-readonly out_prefix="${out_dir}/genebass.hailvep.gnomad_process_csqs.worst_csq_by_gene_canonical.chr${chr}.txt.gz"
-readonly hail_script="scripts/02_hail_ground_truth.py"
+readonly out_prefix="${out_dir}/genebass.hailvep.gnomad_process_csqs.worst_csq_by_gene_canonical.chr${chr}"
+readonly hail_script="scripts/03_worst_csq_by_gene_canonical.py"
 
 mkdir -p ${out_dir}
 mkdir -p ${spark_dir}

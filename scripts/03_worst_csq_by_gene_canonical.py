@@ -60,7 +60,8 @@ def main(args):
     )
 
     ht = ht.select(*[ht.varid, ht.gene_symbol, ht.gene_id, ht.transcript, ht.biotype, ht.mane_select, ht.canonical, ht.csqs, ht.brava_csqs])
-    ht.export(out_prefix + ".worst_csq_by_gene_canonical.txt.gz")
+    ht.write(out_prefix + ".ht")
+    ht.export(out_prefix + ".txt.gz")
 
 
 if __name__=='__main__':

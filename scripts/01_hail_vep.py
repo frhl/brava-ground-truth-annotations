@@ -10,32 +10,6 @@ from ukb_utils import hail_init
 from ko_utils import io
 
 
-def convert_revel_scores_to_unique_float(table):
-    # Define a transformation function
-    def transform_string_to_float_array(s):
-        parts = hl.str(s).split(',')
-
-        float_parts = parts.map(
-            lambda x: hl.if_else((x != ".") & hl.is_defined(
-                hl.float64(x)), hl.float64(x), hl.null('float64'))
-        ).filter(lambda x: hl.is_defined(x))
-
-        return float_parts.first()
-
-    # Apply the transformation function to the revel_score field
-    new_table = table.annotate(
-        vep=table.vep.annotate(
-            transcript_consequences=table.vep.transcript_consequences.map(
-                lambda tc: tc.annotate(
-                    revel_score=transform_string_to_float_array(tc.revel_score)
-                )
-            )
-        )
-    )
-
-    return new_table
-
-
 def main(args):
 
     # parser
@@ -61,8 +35,6 @@ def main(args):
         ht = hl.read_table(input_path)
 
     ht = hl.vep(ht, "utils/configs/vep105.json")
-    ht = convert_revel_scores_to_unique_float(ht)
-    ht = process_consequences(ht)
     ht.write(out_prefix + ".ht", overwrite=True)
 
 
