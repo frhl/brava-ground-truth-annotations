@@ -23,11 +23,15 @@ def main(args):
     
     # get variant by canonical gene transcripts
     ht = ht.explode(ht.vep.worst_csq_by_gene_canonical)
-    # annotate with verdict
 
-    print(ht.describe())
-    
 
+    # assume spliceai is missing
+    ht = ht.annotate(vep = ht.vep.annotate(
+        worst_csq_by_gene_canonical = ht.vep.worst_csq_by_gene_canonical.annotate(SpliceAI_DS_max=hl.null('float64'))
+    ))
+
+
+    # get brava csqs
     ht = ht.annotate(
         brava_csqs=ko.csqs_case_builder_brava(
                 worst_csq_expr=ht.vep.worst_csq_by_gene_canonical
@@ -40,6 +44,10 @@ def main(args):
             gene_symbol=ht.vep.worst_csq_by_gene_canonical.gene_symbol,
             gene_id=ht.vep.worst_csq_by_gene_canonical.gene_id,        
             transcript=ht.vep.worst_csq_by_gene_canonical.transcript_id,
+            biotype=ht.vep.worst_csq_by_gene_canonical.biotype,
+            mane_select=ht.vep.worst_csq_by_gene_canonical.mane_select,
+            canonical=ht.vep.worst_csq_by_gene_canonical.canonical,
+            csqs=ht.vep.worst_csq_by_gene_canonical.most_severe_consequence
     ) 
     
     # annotate with actual variant ID
@@ -51,7 +59,7 @@ def main(args):
             ht.alleles[1]],':')
     )
 
-    ht = ht.select(*[ht.varid, ht.gene_symbol, ht.gene_id, ht.consequence_category])
+    ht = ht.select(*[ht.varid, ht.gene_symbol, ht.gene_id, ht.transcript, ht.biotype, ht.mane_select, ht.canonical, ht.csqs, ht.brava_csqs])
     ht.export(out_prefix + ".worst_csq_by_gene_canonical.txt.gz")
 
 
