@@ -22,31 +22,24 @@ def main(args):
     #spliceai = hl.read_table(spliceai_path)
     
     # get variant by canonical gene transcripts
-    #ht = ht.explode(ht.vep.worst_csq_by_gene_canonical)
-    # spliceAI is also run against GENCODE V24 canonical, so it
-    # it should be kosher to merge them here
-    #ht = ht.transmute(
-    #    vep = ht.vep.annotate(
-    #        worst_csq_by_gene_canonical = ht.vep.worst_csq_by_gene_canonical.annotate(
-    #            SpliceAI_DS_max = spliceai.index(ht.key).SpliceAI.DS_max
-    #        ) 
-    #    )
-    #)   
-    # 
+    ht = ht.explode(ht.vep.worst_csq_by_gene_canonical)
     # annotate with verdict
+
+    print(ht.describe())
+    
+
     ht = ht.annotate(
-        consequence_category=ko.csqs_case_builder_brava(
+        brava_csqs=ko.csqs_case_builder_brava(
                 worst_csq_expr=ht.vep.worst_csq_by_gene_canonical
         )
     )    
  
-    print(ht.describe())
 
     # quick annotated with some useful info
     ht = ht.annotate(
             gene_symbol=ht.vep.worst_csq_by_gene_canonical.gene_symbol,
             gene_id=ht.vep.worst_csq_by_gene_canonical.gene_id,        
-            transcript=ht.vep.worst_csq_by_gene_canonical.gene_symbol,
+            transcript=ht.vep.worst_csq_by_gene_canonical.transcript_id,
     ) 
     
     # annotate with actual variant ID

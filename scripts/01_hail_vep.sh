@@ -6,8 +6,8 @@
 #SBATCH --output=logs/hail_vep.log
 #SBATCH --error=logs/hail_vep.errors.log
 #SBATCH --partition=short
-#SBATCH --cpus-per-task 1
-#SBATCH --array=21
+#SBATCH --cpus-per-task 2
+#SBATCH --array=1,21
 
 set -o errexit
 set -o nounset
