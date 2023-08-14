@@ -19,10 +19,16 @@ def main(args):
     hail_init.hail_bmrc_init_local('logs/hail/export_clinvar.log', 'GRCh38')
     recode = {f"{i}":f"chr{i}" for i in (list(range(1, 23)) + ['X', 'Y'])}
     ht = hl.import_vcf(input_path, force=True, force_bgz=True, skip_invalid_loci=True, contig_recoding=recode)
+    #print(ht.describe())
+    #ht = ht.annotate_rows(
+    #    varid=hl.delimit([
+    #        hl.str(ht.locus.contig),
+    #        hl.str(ht.locus.position),
+    #        ht.alleles[0],
+    #        ht.alleles[1]],':')
+    #) 
     ht = ht.explode_rows(ht.info.CLNSIG)
     ht = ht.rows()
-    ht.describe()
-    ht.write(out_prefix + ".ht", overwrite=True)
     ht = ht.flatten()
     ht.export(out_prefix + ".txt.gz")
 
