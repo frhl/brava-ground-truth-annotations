@@ -3,6 +3,7 @@
         "/well/lindgren/barney/variant-annotation/ensembl-vep-release-105.0/vep",
         "--format", "vcf",
         "__OUTPUT_FORMAT_FLAG__",
+        "--CACHE_VERSION", "105",
         "--everything",
         "--allele_number",
         "--no_stats",
