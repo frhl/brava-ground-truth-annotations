@@ -2,7 +2,8 @@
 #
 #SBATCH --account=lindgren.prj
 #SBATCH --job-name=worst_csq_by_gene_canonical
-#SBATCH --chdir=/well/lindgren-ukbb/projects/ukbb-11867/flassen/projects/KO/brava-ground-truth-annotations
+##SBATCH --chdir=/well/lindgren-ukbb/projects/ukbb-11867/flassen/projects/KO/brava-ground-truth-annotations
+#SBATCH --chdir=/well/lindgren/barney/brava-ground-truth-annotations/
 #SBATCH --output=logs/worst_csq_by_gene_canonical.log
 #SBATCH --error=logs/worst_csq_by_gene_canonical.errors.log
 #SBATCH --partition=short
