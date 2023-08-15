@@ -21,7 +21,7 @@ readonly in_dir="data/vep-hail-out"
 readonly in="${in_dir}/genebass.hailvep.gnomad_process_csqs.chr${chr}.ht"
 
 readonly out_dir="data/vep-hail-out"
-readonly out_prefix="${out_dir}/genebass.hailvep.gnomad_process_csqs.worst_csq_by_gene_canonical.chr${chr}"
+readonly out_prefix="${out_dir}/genebass.hailvep.gnomad_process_csqs.worst_csq_by_gene_canonical.more.chr${chr}"
 readonly hail_script="scripts/03_worst_csq_by_gene_canonical.py"
 
 mkdir -p ${out_dir}
