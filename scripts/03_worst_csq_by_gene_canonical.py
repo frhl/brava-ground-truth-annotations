@@ -47,7 +47,11 @@ def main(args):
             biotype=ht.vep.worst_csq_by_gene_canonical.biotype,
             mane_select=ht.vep.worst_csq_by_gene_canonical.mane_select,
             canonical=ht.vep.worst_csq_by_gene_canonical.canonical,
-            csqs=ht.vep.worst_csq_by_gene_canonical.most_severe_consequence
+            csqs=ht.vep.worst_csq_by_gene_canonical.most_severe_consequence,
+            revel_score=ht.vep.worst_csq_by_gene_canonical.revel_score,
+            cadd_phred=ht.vep.worst_csq_by_gene_canonical.cadd_phred,
+            spliceai_max_ds=ht.vep.worst_csq_by_gene_canonical.SpliceAI_DS_max,
+            loftee_lof=ht.vep.worst_csq_by_gene_canonical.lof
     ) 
     
     # annotate with actual variant ID
@@ -59,8 +63,8 @@ def main(args):
             ht.alleles[1]],':')
     )
 
-    ht = ht.select(*[ht.varid, ht.gene_symbol, ht.gene_id, ht.transcript, ht.biotype, ht.mane_select, ht.canonical, ht.csqs, ht.brava_csqs])
-    ht.write(out_prefix + ".ht")
+    ht = ht.select(*[ht.varid, ht.gene_symbol, ht.gene_id, ht.transcript, ht.biotype, ht.mane_select, ht.canonical, ht.csqs, ht.brava_csqs, ht.revel_score,ht.cadd_phred,ht.loftee_lof,ht.spliceai_max_ds])
+    ht.write(out_prefix + ".ht", overwrite=True)
     ht.export(out_prefix + ".txt.gz")
 
 
