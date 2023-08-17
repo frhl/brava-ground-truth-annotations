@@ -7,7 +7,7 @@
 #SBATCH --error=logs/hail_vep.errors.log
 #SBATCH --partition=short
 #SBATCH --cpus-per-task 2
-#SBATCH --array=1,21
+#SBATCH --array=21
 
 set -o errexit
 set -o nounset
@@ -23,8 +23,10 @@ readonly chr=$( get_chr ${array_idx} )
 readonly in_dir="data/vep-in"
 readonly in="${in_dir}/genebass.chr${chr}.vcf.gz"
 
+readonly json_path="utils/configs/vep105_revel_float.json"
+
 readonly out_dir="data/vep-hail-out"
-readonly out_prefix="${out_dir}/genebass.hailvep.chr${chr}"
+readonly out_prefix="${out_dir}/genebass.hailvep.newdb.chr${chr}"
 readonly hail_script="scripts/01_hail_vep.py"
 
 mkdir -p ${out_dir}
@@ -36,7 +38,8 @@ if [ ! -f "${out_prefix}_vep.ht/_SUCCESS" ]; then
   set_up_pythonpath_legacy  
   python3 ${hail_script} \
        --input_path "${in}" \
-       --out_prefix "${out_prefix}"
+       --out_prefix "${out_prefix}" \
+       --json_path "${json_path}"
 else
   >&2 echo "${out_prefix}* already exists."
 fi

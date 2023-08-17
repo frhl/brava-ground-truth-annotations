@@ -13,8 +13,10 @@ from ko_utils import io
 def main(args):
 
     # parser
+    json_path = args.json_path
     input_path = args.input_path
     out_prefix = args.out_prefix
+    tolerate_parse_error = args.tolerate_parse_error
 
     # setup flags
     hail_init.hail_bmrc_init_local('logs/hail/hail_format.log', 'GRCh38')
@@ -34,7 +36,10 @@ def main(args):
     else:
         ht = hl.read_table(input_path)
 
-    ht = hl.vep(ht, "utils/configs/vep105.json")
+    #pos = hl.literal(set([14216233, 14165372]))
+    #ht = ht.filter(pos.contains(ht.locus.position))
+    ht = hl.vep(ht, json_path, tolerate_parse_error=False)
+    ht.export(out_prefix + ".txt.gz")
     ht.write(out_prefix + ".ht", overwrite=True)
 
 
@@ -42,6 +47,8 @@ if __name__ == '__main__':
     parser = argparse.ArgumentParser()
     # initial params
     parser.add_argument('--input_path', default=None, help='Path to input')
+    parser.add_argument('--json_path', default=None, help='Path to json')
+    parser.add_argument('--tolerate_parse_error', default=False, action='store_true')
     parser.add_argument('--out_prefix', default=None,
                         help='Path prefix for output dataset')
 
