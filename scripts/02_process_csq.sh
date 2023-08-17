@@ -7,7 +7,7 @@
 #SBATCH --error=logs/process_csq.errors.log
 #SBATCH --partition=short
 #SBATCH --cpus-per-task 2
-#SBATCH --array=1,21
+#SBATCH --array=21
 
 set -o errexit
 set -o nounset
@@ -21,10 +21,10 @@ readonly array_idx=$( get_array_task_id )
 readonly chr=$( get_chr ${array_idx} )
 
 readonly in_dir="data/vep-hail-out"
-readonly in="${in_dir}/genebass.hailvep.chr${chr}"
+readonly in="${in_dir}/genebass.hailvep.newdb.chr${chr}.ht"
 
 readonly out_dir="data/vep-hail-out"
-readonly out_prefix="${out_dir}/genebass.hailvep.gnomad_process_csqs.chr${chr}"
+readonly out_prefix="${out_dir}/genebass.hailvep.gnomad_process_csqs.newdb.chr${chr}"
 readonly hail_script="scripts/02_process_csq.py"
 
 mkdir -p ${out_dir}

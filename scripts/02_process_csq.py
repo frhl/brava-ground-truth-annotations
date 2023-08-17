@@ -41,6 +41,7 @@ def main(args):
     input_path = args.input_path
     out_prefix = args.out_prefix
 
+    # standard revel usage
     ht = hl.read_table(input_path)
     ht = convert_revel_scores_to_unique_float(ht)
     ht = process_consequences(ht)
